@@ -1,0 +1,23 @@
+//
+//  WY_MyExamListTableViewCell.h
+//  DormitoryManagementPro
+//
+//  Created by 王杨 on 2020/2/22.
+//  Copyright © 2020 王杨. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "WY_PersonalScoreModel.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface WY_MyExamListTableViewCell : UITableViewCell
+@property (nonatomic, strong) WY_PersonalScoreModel *mWY_PersonalScoreModel;
+@property (nonatomic, strong) UIControl *colSender;
+@property (nonatomic, strong) UIView *viewBG; 
+@property (nonatomic, strong) UIImageView *imgInvoiceType;
+@property (nonatomic, strong) UILabel *lblContent;
+- (void)showCellByItem:(WY_PersonalScoreModel *)withWY_PersonalScoreModel;
+@end
+
+NS_ASSUME_NONNULL_END

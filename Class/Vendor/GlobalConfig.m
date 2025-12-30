@@ -1,0 +1,1474 @@
+//
+//  GlobalConfig.m
+//  MoshActivity
+//
+//  Created by  evafan2003 on 12-12-20.
+//  Copyright (c) 2012年 cn.mosh. All rights reserved.
+//
+
+#import "GlobalConfig.h"
+#import  <sys/utsname.h>
+#import "ifaddrs.h"
+#include <sys/socket.h>
+#include <net/if.h>
+#import "UIImage+GIF.h"
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <AVFoundation/AVAssetImageGenerator.h>
+
+#define iPodTouchString                @"iPod touch"
+#define iPadString                  @"iPad"
+#define DeviceType                  @"设备类型"
+#define System                      @"系统版本"
+
+//static SinaWeibo *instance = nil;
+@implementation GlobalConfig
+
+#pragma mark - 设备方法-
++ (BOOL)isIPodTouch
+{
+    NSString *deviceType = [UIDevice currentDevice].model;
+    return [deviceType isEqualToString:iPodTouchString];
+}
+
++ (BOOL) isIpad
+{
+    NSString *deviceType = [UIDevice currentDevice].model;
+    return [deviceType isEqualToString:iPadString];
+}
+
+//返回设备型号
++ (NSString *)deviceType {
+    
+    return [UIDevice currentDevice].model;
+}
+
+//返回系统版本信息
++ (NSString *)systemVersion {
+    
+    return [UIDevice currentDevice].systemVersion;
+    
+}
+
+//返回应用版本信息
++ (CGFloat)appBulidVersion {
+    
+    NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
+    NSString *versions = [infoDic objectForKey:@"CFBundleVersion"];
+    return [versions floatValue];
+    
+}
+
+//返回应用版本信息
++ (NSString *)appVersion {
+    
+    NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
+    NSString *versions = [infoDic objectForKey:@"CFBundleShortVersionString"];
+    return versions;
+    
+}
+
+//返回bindle ID信息
++ (NSString *)bundleIdentifier {
+    NSString *bid = [[NSBundle mainBundle] bundleIdentifier];
+    return bid;
+    
+}
+
+//获得设备型号
++ (NSString *)currentDeviceModel
+{
+    
+    struct utsname systemInfo;
+    
+    uname(&systemInfo);
+    
+    NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+    
+    if ([platform isEqualToString:@"iPhone1,1"]) return @"iPhone2G(A1203)";
+    if ([platform isEqualToString:@"iPhone1,2"]) return @"iPhone3G(A1241/A1324)";
+    if ([platform isEqualToString:@"iPhone2,1"]) return @"iPhone3GS(A1303/A1325)";
+    if ([platform isEqualToString:@"iPhone3,1"]) return @"iPhone4(A1332)";
+    if ([platform isEqualToString:@"iPhone3,2"]) return @"iPhone4(A1332)";
+    if ([platform isEqualToString:@"iPhone3,3"]) return @"iPhone4(A1349)";
+    if ([platform isEqualToString:@"iPhone4,1"]) return @"iPhone4S(A1387/A1431)";
+    if ([platform isEqualToString:@"iPhone5,1"]) return @"iPhone5(A1428)";
+    if ([platform isEqualToString:@"iPhone5,2"]) return @"iPhone5(A1429/A1442)";
+    if ([platform isEqualToString:@"iPhone5,3"]) return @"iPhone5c(A1456/A1532)";
+    if ([platform isEqualToString:@"iPhone5,4"]) return @"iPhone5c(A1507/A1516/A1526/A1529)";
+    if ([platform isEqualToString:@"iPhone6,1"]) return @"iPhone5s(A1453/A1533)";
+    if ([platform isEqualToString:@"iPhone6,2"]) return @"iPhone5s(A1457/A1518/A1528/A1530)";
+    if ([platform isEqualToString:@"iPhone7,1"]) return @"iPhone6Plus(A1522/A1524)";
+    if ([platform isEqualToString:@"iPhone7,2"]) return @"iPhone6(A1549/A1586)";
+    
+    if ([platform isEqualToString:@"iPod1,1"])   return @"iPodTouch1G(A1213)";
+    if ([platform isEqualToString:@"iPod2,1"])   return @"iPodTouch2G(A1288)";
+    if ([platform isEqualToString:@"iPod3,1"])   return @"iPodTouch3G(A1318)";
+    if ([platform isEqualToString:@"iPod4,1"])   return @"iPodTouch4G(A1367)";
+    if ([platform isEqualToString:@"iPod5,1"])   return @"iPodTouch5G(A1421/A1509)";
+    
+    if ([platform isEqualToString:@"iPad1,1"])   return @"iPad1G(A1219/A1337)";
+    
+    if ([platform isEqualToString:@"iPad2,1"])   return @"iPad2(A1395)";
+    if ([platform isEqualToString:@"iPad2,2"])   return @"iPad2(A1396)";
+    if ([platform isEqualToString:@"iPad2,3"])   return @"iPad2(A1397)";
+    if ([platform isEqualToString:@"iPad2,4"])   return @"iPad2(A1395+New Chip)";
+    if ([platform isEqualToString:@"iPad2,5"])   return @"iPadMini1G(A1432)";
+    if ([platform isEqualToString:@"iPad2,6"])   return @"iPadMini1G(A1454)";
+    if ([platform isEqualToString:@"iPad2,7"])   return @"iPadMini1G(A1455)";
+    
+    if ([platform isEqualToString:@"iPad3,1"])   return @"iPad3(A1416)";
+    if ([platform isEqualToString:@"iPad3,2"])   return @"iPad3(A1403)";
+    if ([platform isEqualToString:@"iPad3,3"])   return @"iPad3(A1430)";
+    if ([platform isEqualToString:@"iPad3,4"])   return @"iPad4(A1458)";
+    if ([platform isEqualToString:@"iPad3,5"])   return @"iPad4(A1459)";
+    if ([platform isEqualToString:@"iPad3,6"])   return @"iPad4(A1460)";
+    
+    if ([platform isEqualToString:@"iPad4,1"])   return @"iPadAir(A1474)";
+    if ([platform isEqualToString:@"iPad4,2"])   return @"iPadAir(A1475)";
+    if ([platform isEqualToString:@"iPad4,3"])   return @"iPadAir(A1476)";
+    if ([platform isEqualToString:@"iPad4,4"])   return @"iPadMini2G(A1489)";
+    if ([platform isEqualToString:@"iPad4,5"])   return @"iPadMini2G(A1490)";
+    if ([platform isEqualToString:@"iPad4,6"])   return @"iPadMini2G(A1491)";
+    
+    if ([platform isEqualToString:@"i386"])      return @"iPhoneSimulator";
+    if ([platform isEqualToString:@"x86_64"])    return @"iPhoneSimulator";
+    return platform;
+}
+
+
+//是否ios7
++ (BOOL) versionIsIOS7
+{
+    NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
+    if ([[ver objectAtIndex:0] intValue] >= 7) {
+        return YES;
+    }
+    return NO;
+}
+
+//打电话
++ (void)makeCall:(NSString *)phoneNumber
+{
+    if ([GlobalConfig isIPodTouch]){
+        [GlobalConfig alert:@"设备不支持打电话功能！"];
+        return;
+    }
+    
+    NSString* numberAfterClear = phoneNumber;
+    
+    NSURL *phoneNumberURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", numberAfterClear]];
+#ifdef DEBUGMODEL
+    ////nslog(@"make call, URL=%@", phoneNumberURL);
+#endif
+    
+    if (@available(iOS 10.0, *)) {
+        [[UIApplication sharedApplication] openURL:phoneNumberURL options:@{} completionHandler:nil];
+    } else {
+        [[UIApplication sharedApplication] openURL: phoneNumberURL];
+    }
+}
+
+//发短信
++ (void)sendSms:(NSString *)phoneNumber
+{
+    //    if ([GlobalConfig isIPodTouch]){
+    //        [GlobalConfig alert:kSmsNotSupportOnIPod];
+    //        return;
+    //    }
+    
+    NSString* numberAfterClear = phoneNumber;
+    
+    NSURL *phoneNumberURL = [NSURL URLWithString:[NSString stringWithFormat:@"sms:%@", numberAfterClear]];
+    if (@available(iOS 10.0, *)) {
+        [[UIApplication sharedApplication] openURL:phoneNumberURL options:@{} completionHandler:nil];
+    } else {
+        [[UIApplication sharedApplication] openURL: phoneNumberURL];
+    }
+}
+
+//发邮件
++ (void)sendEmail:(NSString *)to cc:(NSString*)cc subject:(NSString*)subject body:(NSString*)body
+{
+    NSString* str = [NSString stringWithFormat:@"mailto:%@?cc=%@&subject=%@&body=%@",
+                     to, cc, subject, body];
+    
+    str = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+     
+    if (@available(iOS 10.0, *)) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str] options:@{} completionHandler:nil];
+    } else {
+        [[UIApplication sharedApplication] openURL: [NSURL URLWithString:str]];
+    }
+    
+}
+
++(void)openUrl:(NSString *) url{
+     
+    if (@available(iOS 10.0, *)) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
+    } else {
+        [[UIApplication sharedApplication] openURL: [NSURL URLWithString:url]];
+    }
+}
+
++ (void) paste:(NSString *)content
+{
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    [pasteboard setString:content];
+}
+
+//推入动画
++ (void) push:(BOOL)push viewController:(UIViewController *)ctl withNavigationCotroller:(UINavigationController *)navCtl animationType:(NSInteger)number1 subType:(NSInteger)number2 Duration:(CGFloat)time
+{
+    /*
+     ￼公开type:
+     fade, moveIn, push and reveal
+     未公开type:
+     cube, suckEffect, oglFlip, rippleEffect, pageCurl, pageUnCurl, cameraIrisHollowOpen, cameraIrisHollowClose
+     subtype:
+     kCATransitionFromRight kCATransitionFromLeft
+     kCATransitionFromTop kCATransitionFromBottom
+     */
+    NSDictionary *allType = @{@1:kCATransitionPush,
+                              @2:kCATransitionMoveIn,
+                              @3:kCATransitionFade,
+                              @4:kCATransitionReveal};
+    NSDictionary *allSubType = @{@1:kCATransitionFromLeft,
+                                 @2:kCATransitionFromRight,
+                                 @3:kCATransitionFromTop,
+                                 @4:kCATransitionFromBottom};
+    
+    CATransition *ca = [CATransition animation];
+    NSNumber *type = [NSNumber numberWithInteger:number1];
+    NSNumber *subtype = [NSNumber numberWithInteger:number2];
+    
+    if (allType[type]) {
+        [ca setType:allType[type]];
+    }
+    if (allSubType[subtype]) {
+        [ca setSubtype:allSubType[subtype]];
+    }
+    [ca setDuration:time?time:1.0f];
+    [navCtl.view.layer  addAnimation:ca forKey:@"animation"];
+    
+    if (push) {
+        [navCtl pushViewController:ctl animated:YES];
+    }
+    else {
+        [navCtl popViewControllerAnimated:YES];
+    }
+}
+
+//创建基础控件
++ (UIView *)createViewWithFrame:(CGRect)rect{
+    UIView* view = [[UIView alloc] initWithFrame:rect];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
++ (UIImageView *)createImageViewWithFrame:(CGRect)rect ImageName:(NSString *)imageName{
+    UIImageView* imageView = [[UIImageView alloc] initWithFrame:rect];
+    imageView.image = [UIImage imageNamed:imageName];
+    return imageView;
+}
+
++ (UILabel *)createLabelWithFrame:(CGRect)rect Text:(NSString *)text FontSize:(CGFloat)fontSize textColor:(UIColor *)color aligment:(NSTextAlignment)aligment{
+    UILabel* label = [[UILabel alloc] initWithFrame:rect];
+    label.text = text;
+    label.textColor = color;
+    label.textAlignment = aligment;
+    label.font = YF_CustomFont(fontSize);
+    label.backgroundColor = [UIColor clearColor];
+    label.userInteractionEnabled  =YES;
+    return label;
+}
+
++ (UILabel *)createLabelWithFrame:(CGRect)rect Text:(NSString *)text FontSize:(CGFloat)fontSize textColor:(UIColor *)color{
+    UILabel* label = [[UILabel alloc] initWithFrame:rect];
+    label.text = text;
+    label.textColor = color;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = YF_CustomFont(fontSize);
+    label.backgroundColor = [UIColor clearColor];
+    return label;
+}
+
++ (UITextField *)createTextFieldWithFrame:(CGRect)rect Placeholder:(NSString *)placeHolder{
+    UITextField* textField = [[UITextField alloc] initWithFrame:rect];
+    textField.placeholder = placeHolder;
+    textField.borderStyle = UITextBorderStyleRoundedRect;
+    return textField;
+}
+
++ (UIButton *)createButtonWithFrame:(CGRect)rect ImageName:(NSString *)imageName Title:(NSString *)title Target:(id)target Action:(SEL)action{
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = rect;
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateHighlighted];
+    button.titleLabel.font = YF_CustomFont(14);
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    return button;
+}
+
+
++ (void) textFieldAddLeftView:(UITextField *)view
+{
+    if ([view isKindOfClass:[UITextField class]]) {
+        view.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,5, view.frame.size.height)];
+        view.leftViewMode = UITextFieldViewModeAlways;
+    }
+}
++ (void) textField:(UITextField *)view  AddViewOfLeft:(BOOL)left width:(CGFloat)width
+{
+    if ([view isKindOfClass:[UITextField class]]) {
+        UIView *spaceView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,width, view.frame.size.height)];
+        if(left) {
+            view.leftView = spaceView;
+            view.leftViewMode = UITextFieldViewModeAlways;
+        }
+        else {
+            view.rightView = spaceView;
+            view.rightViewMode = UITextFieldViewModeAlways;
+        }
+    }
+}
+
+#pragma mark - 时间方法 -
+//格式化日期 时间戳转换为YYYY-MM-dd HH:mm:ss格式
++(NSString *) dateFormater:(NSString *)timeStamp format:(NSString *)format {
+    
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    if (format == nil) {
+        format = DATEFORMAT_01;
+    }
+    [formatter setDateFormat:format];
+    [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:(NSTimeInterval)[timeStamp intValue]];
+    NSString *str = [formatter stringFromDate:date];
+    return str;
+    
+}
+
+//格式化日期 转换为YYYY-MM-dd HH:mm:ss格式
++(NSString *) date:(NSDate *)date format:(NSString *)format {
+    
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    if (format == nil) {
+        format = DATEFORMAT_01;
+    }
+    [formatter setDateFormat:format];
+    [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    NSString *str = [formatter stringFromDate:date];
+    return str;
+    
+}
+
+//将YYYY-MM-dd HH:mm:ss的时间转化为时间戳
++(NSTimeInterval) datetoTimeStamp:(NSString *) date format:(NSString *)format {
+    //2012-11-22 00:00
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    if (format == nil) {
+        format = @"yyyy-MM-dd HH:mm:ss";
+    }
+    
+    [formatter setDateFormat:format];
+    [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    NSDate *dateStr = [formatter dateFromString:date];
+    NSTimeInterval aaa = [dateStr timeIntervalSince1970];
+    return aaa;
+}
+
+//获取当前时间戳有两种方法(以毫秒为单位)
+
++(NSString *)getNowTimeTimestamp{
+    
+    NSTimeInterval time = [[NSDate date] timeIntervalSince1970] * 1000;
+    NSString *timeString = [NSString stringWithFormat:@"%lf", time];
+    return timeString;
+    //    NSDate* date = [NSDate dateWithTimeIntervalSinceNow:0];//获取当前时间0秒后的时间
+    //    NSTimeInterval time=[date timeIntervalSince1970]*1000;// *1000 是精确到毫秒，不乘就是精确到秒
+    //    NSString *timeString = [NSString stringWithFormat:@"%f", time];
+    //    return timeString;
+    
+    //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
+    //    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    //    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    //    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss SSS"]; // ----------设置你想要的格式,hh与HH的区别:分别表示12小时制,24小时制
+    //    //设置时区,这个对于时间的处理有时很重要
+    //    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];
+    //    [formatter setTimeZone:timeZone];
+    //    NSDate *datenow = [NSDate date];//现在时间,你可以输出来看下是什么格式
+    //    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datenow timeIntervalSince1970]*1000];
+    //    return timeSp;
+}
+
++ (NSComparisonResult) dateCompareWithCurrentDate:(NSString *)timeStamp
+{
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeStamp integerValue]];
+    NSDate *currentDate = [NSDate date];
+    return [date compare:currentDate];
+}
+
+#pragma mark - 其他方法 -
+//单一按钮提示
++ (void)alert:(NSString *)msg
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:msg message:@"" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+//获得缓存目录
++ (NSString *)getDocumentPath:(NSString *)string {
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *dataPath = [paths objectAtIndex:0];
+    NSString *absPath = [dataPath stringByAppendingPathComponent:string];
+    return absPath;
+}
+
+//判断是否是字符串并且长度大于零
++ (BOOL) isKindOfNSStringClassAndLenthGreaterThanZero:(NSString *)string
+{
+    return ([string isKindOfClass:[NSString class]] && string.length > 0);
+}
+//判断是否是数组并且数量大于零
++ (BOOL) isKindOfNSArrayClassAndCountGreaterThanZero:(NSArray *)array
+{
+    return ([array isKindOfClass:[NSArray class]] && array.count > 0);
+}
+//判断是否是字典并且数量大于零
++ (BOOL) isKindOfNSDictionaryClassAndCountGreaterThanZero:(NSDictionary *)dic
+{
+    return ([dic isKindOfClass:[NSDictionary class]] && dic.count > 0);
+}
+
+//判断是否是字符串并且长度大于零,如果为no则弹出警告
++ (BOOL) isKindOfNSStringClassAndLenthGreaterThanZero:(NSString *)string Alert:(NSString *)alert
+{
+    if ([string isKindOfClass:[NSString class]] && string.length > 0) {
+        return YES;
+    }
+    else {
+        [GlobalConfig alert:alert];
+        return NO;
+    }
+}
+
+//数据优化
++ (NSString *) convertToString:(id)str
+{
+    if (![GlobalConfig isKindOfNSStringClassAndLenthGreaterThanZero:str]) {
+        return @"";
+    }
+    return (NSString *)str;
+}
+
++ (NSArray *) convertToArray:(id)array
+{
+    if (![GlobalConfig isKindOfNSArrayClassAndCountGreaterThanZero:array]) {
+        return @[];
+    }
+    return array;
+}
++ (NSDictionary *) convertToDictionary:(id)dic
+{
+    if (![GlobalConfig isKindOfNSDictionaryClassAndCountGreaterThanZero:dic]) {
+        return @{};
+    }
+    return dic;
+}
+
++ (NSNumber *) convertToNumber:(id)num
+{
+    if ([num isKindOfClass:[NSNumber class]]) {
+        return num;
+    }
+    return [[NSNumber alloc] initWithBool:NO];
+}
+
+//获取文字高度
++ (CGSize) getAdjustHeightOfContent:(NSString *)text width:(CGFloat)width fontSize:(CGFloat)fontSize
+{
+    //    CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(width,10000) lineBreakMode:NSLineBreakByWordWrapping];
+    if ([text isKindOfClass:[NSDictionary class]]) {
+        return CGSizeMake(width, 200);
+    }
+    NSDictionary *attributes = @{NSFontAttributeName:YF_CustomFont(fontSize)};
+    CGSize size = [text boundingRectWithSize:CGSizeMake(width, 10000) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:attributes context:nil].size;
+    size = CGSizeMake(size.width, size.height);
+    return size;
+}
+
+
+
+
+
+
+
+
+//获取文字宽度
++ (CGSize) getAdjustWidthOfContent:(NSString *)text height:(CGFloat)height fontSize:(CGFloat)fontSize
+{
+    NSDictionary *attributes = @{NSFontAttributeName:YF_CustomFont(fontSize)};
+    CGSize size = [text boundingRectWithSize:CGSizeMake(kScreenWidth, height) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:attributes context:nil].size;
+    size = CGSizeMake(size.width, size.height);
+    return size;
+}
+
+//获取加粗文字宽度
++ (CGSize) getWidthOfContent:(NSString *)text height:(CGFloat)height fontSize:(CGFloat)fontSize
+{
+    NSDictionary *attributes = @{NSFontAttributeName:YF_FONTBOLDSYS(fontSize)};
+    CGSize size = [text boundingRectWithSize:CGSizeMake(kScreenWidth, height) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:attributes context:nil].size;
+    size = CGSizeMake(size.width, size.height);
+    return size;
+}
+
+
+//获取自定义文字宽度
++ (CGSize) getWidthOfContent:(NSString *)text height:(CGFloat)height fontSize:(CGFloat)fontSize fontName:(NSString *)fontName
+{
+    NSDictionary *attributes = @{NSFontAttributeName:[UIFont fontWithName:fontName size:fontSize]};
+    CGSize size = [text boundingRectWithSize:CGSizeMake(kScreenWidth, height) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:attributes context:nil].size;
+    size = CGSizeMake(size.width, size.height);
+    return size;
+}
+
+
+/*邮箱验证 MODIFIED BY HELENSONG*/
++ (BOOL)isValidateEmail:(NSString *)email
+{
+    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:email];
+}
+
+/// 邮政编码验证
+/// @param email email description
++ (BOOL)isValidatePost:(NSString *)email
+{
+    NSString *emailRegex = @"^[1-9]\\d{5}$";
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:email];
+}
+
+
+/*手机号码验证 MODIFIED BY HELENSONG*/
++ (BOOL) isValidateMobile:(NSString *)mobile
+{
+    //手机号以13， 15，18开头，八个 \d 数字字符
+    //11位或者13位数字
+    NSString *phoneRegex = @"^\\d{11}$";
+    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
+    //    ////nslog(@"phoneTest is %@",phoneTest);
+    return [phoneTest evaluateWithObject:mobile];
+}
+/*密码验证-数字、字母、符号组合 */
++ (BOOL) isValidatePwd:(NSString *)pwd
+{
+    //密码应为6-15位数字、字母、符号组合
+    //    NSString *phoneRegex = @"^(?:(?=.*[0-9].*)(?=.*[A-Za-z].*)(?=.*[,@\\.#%'\\+\\*\\-:;^_`].*))[,@\\.#%'\\+\\*\\-:;^_`0-9A-Za-z]{6,15}$";
+    
+    NSString *phoneRegex =@"^(?=.*)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*\\-:;,.=?$\x22]).{6,15}$";
+    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
+    //    ////nslog(@"phoneTest is %@",phoneTest);
+    return [phoneTest evaluateWithObject:pwd];
+}
+
+/*身份证号验证 MODIFIED BY HELENSONG*/
++ (BOOL) isValidateIDCard:(NSString *)carNo
+{
+    //手机号以13， 15，18开头，八个 \d 数字字符
+    //11位或者13位数字
+    NSString *phoneRegex = @"^[1-9]\\d{5}(18|19|20)\\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$";
+    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
+    //    ////nslog(@"phoneTest is %@",phoneTest);
+    return [phoneTest evaluateWithObject:carNo];
+}
+
+/*车牌号验证 MODIFIED BY HELENSONG*/
++ (BOOL) isValidateCarNo:(NSString*)carNo
+{
+    NSString *carRegex = @"^[A-Za-z]{1}[A-Za-z_0-9]{5}$";
+    NSPredicate *carTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",carRegex];
+    //    ////nslog(@"carTest is %@",carTest);
+    return [carTest evaluateWithObject:carNo];
+}
+
+//车牌
++(BOOL)checkCarID:(NSString *)carID
+{
+    if (carID.length==7) {
+        //普通汽车，7位字符，不包含I和O，避免与数字1和0混淆
+        NSString *carRegex = @"^[\u4e00-\u9fa5]{1}[a-hj-np-zA-HJ-NP-Z]{1}[a-hj-np-zA-HJ-NP-Z0-9]{4}[a-hj-np-zA-HJ-NP-Z0-9\u4e00-\u9fa5]$";
+        NSPredicate *carTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",carRegex];
+        return [carTest evaluateWithObject:carID];
+    }else if(carID.length==8){
+        //新能源车,8位字符，第一位：省份简称（1位汉字），第二位：发牌机关代号（1位字母）;
+        //小型车，第三位：只能用字母D或字母F，第四位：字母或者数字，后四位：必须使用数字;([DF][A-HJ-NP-Z0-9][0-9]{4})
+        //大型车3-7位：必须使用数字，后一位：只能用字母D或字母F。([0-9]{5}[DF])
+        NSString *carRegex = @"^[\u4e00-\u9fa5]{1}[a-hj-np-zA-HJ-NP-Z]{1}([0-9]{5}[d|f|D|F]|[d|f|D|F][a-hj-np-zA-HJ-NP-Z0-9][0-9]{4})$";
+        NSPredicate *carTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",carRegex];
+        return [carTest evaluateWithObject:carID];
+    }
+    return NO;
+}
+
+
+
+/*网址 MODIFIED BY HELENSONG*/
++ (BOOL) isValidateUrl:(NSString *)url
+{
+    if ([GlobalConfig isKindOfNSStringClassAndLenthGreaterThanZero:url]) {
+        NSString *httpRegex = @"http+:[^\\s]*";
+        NSPredicate *httpTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",httpRegex];
+        return [httpTest evaluateWithObject:url];
+    }
+    return NO;
+}
+
+//压缩图片,按尺寸大小压缩size
++ (UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize
+{
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
++ (void) saveUserDefaultWithDictionary:(NSDictionary *)dic
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    for (NSString *key in [dic allKeys]) {
+        [defaults setObject:dic[key] forKey:key];
+    }
+    [defaults synchronize];
+}
+//textField 设置换行键
++ (void) textFieldReturnKeyWithArray:(NSArray *)array
+{
+    for (UITextField *textField in array) {
+        if ([textField isFirstResponder]) {
+            NSInteger index = [array indexOfObject:textField];
+            if (index == [array count] - 1) {
+                [[array objectAtIndex:index] resignFirstResponder];
+                break;
+            }
+            else {
+                //                [textField resignFirstResponder];
+                [[array objectAtIndex:index + 1] becomeFirstResponder];
+                break;
+            }
+        }
+    }
+}
+
+//显示2s提示信息
++ (void) showAnimationAlertViewWithMessage:(NSString *)message
+{
+    if ([GlobalConfig isKindOfNSStringClassAndLenthGreaterThanZero:message]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            CGSize size = [GlobalConfig getAdjustHeightOfContent:message width:220 fontSize:14];
+            size.height += 10;
+            UILabel *label = [GlobalConfig createLabelWithFrame:CGRectMake((kScreenWidth - 220)/2,100, 220, size.height + 10) Text:message FontSize:14 textColor:[UIColor whiteColor]];
+            label.numberOfLines = 0;
+            label.textAlignment = NSTextAlignmentCenter;
+            label.backgroundColor = [UIColor colorWithRed:255 / 255.0 green:100 / 255.0 blue:165 / 255.0 alpha:1.0f];
+            label.layer.cornerRadius = 7;
+            label.layer.masksToBounds = YES;
+            label.layer.shadowColor = [UIColor blackColor].CGColor;
+            label.layer.shadowRadius = 2;
+            label.layer.shadowOpacity = 0.8;
+            
+            UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+            [window addSubview:label];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW,2*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [label removeFromSuperview];
+            });
+            
+        });
+    }
+}
+
+
+//显示2s提示信息
++ (void) showAlertViewWithMessage:(NSString *)message offset:(CGFloat)height
+{
+    if ([GlobalConfig isKindOfNSStringClassAndLenthGreaterThanZero:message]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            CGSize size = [GlobalConfig getAdjustHeightOfContent:message width:220 fontSize:14];
+            size.height += 10;
+            UILabel *label = [GlobalConfig createLabelWithFrame:CGRectMake((kScreenWidth - 220)/2, (kScreenHeight - size.height - 10)/2 - height, 220, size.height + 10) Text:message FontSize:14 textColor:[UIColor whiteColor]];
+            label.numberOfLines = 0;
+            label.textAlignment = NSTextAlignmentCenter;
+            label.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.65];
+            label.layer.cornerRadius = 3;
+            label.layer.masksToBounds = YES;
+            label.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+            label.layer.shadowRadius = 2;
+            label.layer.shadowOpacity = 0.8;
+            [[[UIApplication sharedApplication] keyWindow] addSubview:label];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW,2*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [label removeFromSuperview];
+            });
+            
+        });
+    }
+}
+
++(NSString *) getObjectWithKey:(NSString *)key
+{
+    return [GlobalConfig convertToString:[[NSUserDefaults standardUserDefaults] objectForKey:key]];
+    
+}
+
+#pragma mark - UIKeyBoardNotification -
++ (void) keyBoardDidShow:(NSNotification *)noti scrollView:(UIScrollView *)scrollView
+{
+    NSDictionary *dic = [noti userInfo];
+    CGSize size = [[dic objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, size.height, 0.0);
+    [UIView animateWithDuration:0.5 animations:^{
+        scrollView.contentInset = contentInsets;
+        scrollView.scrollIndicatorInsets = contentInsets;
+    }];
+}
+
++ (void) keyBoardDidDisapper:(NSNotification *)noti scrollView:(UIScrollView *)scrollView
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        scrollView.contentInset = UIEdgeInsetsZero;
+        scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    }];
+}
+
+
++ (UIViewController *) viewController:(NSString *)controllerName {
+    if ([GlobalConfig isKindOfNSStringClassAndLenthGreaterThanZero:controllerName]) {
+        UIViewController *ctl = [[NSClassFromString(controllerName) class] new];
+        return ctl;
+    }
+    return nil;
+}
+
++ (BOOL) isFirshShowIntroViewOfClass:(NSString *)classname {
+    NSString *key = [NSString stringWithFormat:@"intro%@",classname];
+    //    if ([[NSUserDefaults standardUserDefaults] objectForKey:key]) {
+    //        NSString *newKey = [NSString stringWithFormat:@"intro%@uid%@",classname,[UserCenter currentUserID]];
+    //        [GlobalConfig saveUserDefaultWithDictionary:@{newKey:@YES}];
+    //        return NO;
+    //    }
+    //    else {
+    //        [GlobalConfig saveUserDefaultWithDictionary:@{key:@YES}];
+    //
+    //        NSString *newKey = [NSString stringWithFormat:@"intro%@uid%@",classname,[UserCenter currentUserID]];
+    //        [GlobalConfig saveUserDefaultWithDictionary:@{newKey:@YES}];
+    //        return YES;
+    //    }
+    return NO;
+}
+
+
+
++(BOOL)existFile:(NSString *)filePath
+{
+    NSFileManager * fileManager = [NSFileManager defaultManager];
+    return [fileManager fileExistsAtPath:filePath];
+}
+
++(BOOL)deleteFile:(NSString *)filePath
+{
+    NSFileManager * fileManager = [NSFileManager defaultManager];
+    return [fileManager removeItemAtPath:filePath error:nil];
+    
+}
+
++(BOOL)existString:(NSString *)string
+{
+    BOOL flag = NO;
+    if (string&&string.length&&![string isEqualToString:@"<null>"]&&![string isEqualToString:@"(null)"]&&![string isEqualToString:@"null"]) {
+        flag = YES;
+    }
+    return flag;
+}
+
++ (BOOL)isPureInt:(NSString *)string{
+    NSScanner* scan = [NSScanner scannerWithString:string];
+    int val;
+    return [scan scanInt:&val] && [scan isAtEnd];
+}
+
++ (UIColor*) colorWithHex:(NSInteger)hexValue alpha:(CGFloat)alphaValue
+{
+    return [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16))/255.0
+                           green:((float)((hexValue & 0xFF00) >> 8))/255.0
+                            blue:((float)(hexValue & 0xFF))/255.0 alpha:alphaValue];
+}
+
++ (UIColor *)colorWithHexString:(NSString *)color alpha:(CGFloat)alpha
+{
+    //删除字符串中的空格
+    NSString *cString = [[color stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    // String should be 6 or 8 characters
+    if ([cString length] < 6)
+    {
+        return [UIColor clearColor];
+    }
+    // strip 0X if it appears
+    //如果是0x开头的，那么截取字符串，字符串从索引为2的位置开始，一直到末尾
+    if ([cString hasPrefix:@"0X"])
+    {
+        cString = [cString substringFromIndex:2];
+    }
+    //如果是#开头的，那么截取字符串，字符串从索引为1∫的位置开始，一直到末尾
+    if ([cString hasPrefix:@"#"])
+    {
+        cString = [cString substringFromIndex:1];
+    }
+    if ([cString length] != 6)
+    {
+        return [UIColor clearColor];
+    }
+    
+    // Separate into r, g, b substrings
+    NSRange range;
+    range.location = 0;
+    range.length = 2;
+    //r
+    NSString *rString = [cString substringWithRange:range];
+    //g
+    range.location = 2;
+    NSString *gString = [cString substringWithRange:range];
+    //b
+    range.location = 4;
+    NSString *bString = [cString substringWithRange:range];
+    
+    // Scan values
+    unsigned int r, g, b;
+    [[NSScanner scannerWithString:rString] scanHexInt:&r];
+    [[NSScanner scannerWithString:gString] scanHexInt:&g];
+    [[NSScanner scannerWithString:bString] scanHexInt:&b];
+    return [UIColor colorWithRed:((float)r / 255.0f) green:((float)g / 255.0f) blue:((float)b / 255.0f) alpha:alpha];
+}
+
++ (long long) getInterfaceBytes
+{
+    struct ifaddrs *ifa_list = 0, *ifa;
+    if (getifaddrs(&ifa_list) == -1)
+    {
+        return 0;
+    }
+    
+    uint32_t iBytes = 0;
+    uint32_t oBytes = 0;
+    
+    for (ifa = ifa_list; ifa; ifa = ifa->ifa_next)
+    {
+        if (AF_LINK != ifa->ifa_addr->sa_family)
+            continue;
+        
+        if (!(ifa->ifa_flags & IFF_UP) && !(ifa->ifa_flags & IFF_RUNNING))
+            continue;
+        
+        if (ifa->ifa_data == 0)
+            continue;
+        
+        /* Not a loopback device. */
+        if (strncmp(ifa->ifa_name, "lo", 2))
+        {
+            struct if_data *if_data = (struct if_data *)ifa->ifa_data;
+            
+            iBytes += if_data->ifi_ibytes;
+            oBytes += if_data->ifi_obytes;
+        }
+    }
+    freeifaddrs(ifa_list);
+    
+    float webflow1 = (((float)iBytes/1024.0)/1024.0)/1024.0;
+    float webflow2 = (((float)oBytes/1024.0)/1024.0)/1024.0;
+    NSLog(@"\n[getInterfaceBytes-Total]%f,%f",webflow1,webflow2);
+    
+    
+    
+    return iBytes;
+}
+
++(void)showSVProgressHudImageType
+{
+    
+    //    [SVProgressHUD setBackgroundColor:[UIColor clearColor]];
+    //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    //        [SVProgressHUD showImage:[SVProgressHUD shareInstance].animationImage status:@"" maskType:SVProgressHUDMaskTypeNone];
+    //    });
+}
+
+#pragma mark -- 是否为纯数字
++(BOOL)isNumText:(NSString *)str{
+    NSString *regex =@"[0-9]*";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    return [pred evaluateWithObject:str];
+}
+
++ (void)saveVideo:(NSString*)urlString{
+    
+    //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    //        NSData * data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",HOST,urlString]]];
+    //        if (!data) {
+    //            data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",@"",urlString]]];
+    //        }
+    //        NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
+    //        NSString * path = [GlobalConfig getDocumentPath:[NSString stringWithFormat:@"%ld.mp4",(long)timeInterval]];
+    //        NSError * error;
+    //
+    //        BOOL flag = [data writeToFile:path options:NSDataWritingAtomic error:&error];
+    //
+    //        if (flag) {
+    //            [GlobalConfig saveVideo:path];
+    //        }
+    //
+    //        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    //
+    //        NSURL * url = [NSURL fileURLWithPath:urlString];
+    //
+    //        [library writeVideoAtPathToSavedPhotosAlbum:url
+    //                                    completionBlock:^(NSURL *assetURL, NSError *error) {
+    //                                        if (error) {
+    //                                            [GlobalConfig showAlertViewWithMessage:@"保存失败" offset:0];
+    //                                            NSLog(@"Save video fail:%@",error);
+    //                                        } else {
+    //                                            [GlobalConfig showAlertViewWithMessage:@"已保存到系统相册" offset:0];
+    //                                            NSLog(@"Save video succeed.");
+    //                                        }
+    //                                    }];
+    //    });
+}
+
++(void)savedToPhotsAlbum:(UIImage *)image
+{
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    [library writeImageToSavedPhotosAlbum:[image CGImage] orientation:image.imageOrientation completionBlock:^(NSURL *assetURL, NSError *error) {
+        if (error) {
+            [GlobalConfig showAlertViewWithMessage:@"保存失败" offset:0];
+        } else {
+            [GlobalConfig showAlertViewWithMessage:@"已保存到系统相册" offset:0];
+        }
+    }];
+    
+}
+
++(void)saveImageToLocalLibraryWithImage:(UIImage *)image
+                                toGroup:(NSString *)groupName
+{
+    __block ALAssetsLibrary * library = [[ALAssetsLibrary alloc] init];
+    [library writeImageToSavedPhotosAlbum:[image CGImage] orientation:image.imageOrientation completionBlock:^(NSURL *assetURL, NSError *error) {
+        if (error) {
+            return ;
+        }
+        
+        [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+            
+            NSString * group_name = [group valueForProperty:ALAssetsGroupPropertyName];
+            if ([groupName isEqualToString:group_name]) {
+                //有同名
+                [library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+                    [group addAsset:asset];
+                    
+                } failureBlock:^(NSError *error) {
+                    
+                }];
+            }
+            else{
+                [library addAssetsGroupAlbumWithName:groupName resultBlock:^(ALAssetsGroup *group) {
+                    
+                    [library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+                        [group addAsset:asset];
+                        
+                    } failureBlock:^(NSError *error) {
+                        
+                    }];
+                } failureBlock:^(NSError *error) {
+                    
+                }];
+            }
+            
+        } failureBlock:^(NSError *error) {
+            
+        }];
+    }];
+}
+
+
++(void)scaleView:(UIView *)view
+{
+    [UIView animateWithDuration:0.4 animations:^{
+        view.transform = CGAffineTransformScale(view.transform, 1.2, 1.2);
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.2 animations:^{
+            view.transform = CGAffineTransformIdentity;
+        }];
+    }];
+}
+
+//包含字母和数字
++(BOOL)judgePassWordLegal:(NSString *)pass{
+    BOOL result = false;
+    // 判断长度大于4位后再接着判断是否同时包含数字和字符
+    NSString * regex = @"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{4,16}$";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    result = [pred evaluateWithObject:pass];
+    return result;
+}
+
+//纯字符串
++(BOOL)PureLetters:(NSString*)str{
+    
+    for(int i=0;i<str.length;i++){
+        
+        unichar c=[str characterAtIndex:i];
+        
+        if((c<'A'||c>'Z')&&(c<'a'||c>'z'))
+            
+            return NO;
+        
+    }
+    
+    return YES;
+    
+}
+
+
+#pragma mark -- 身份证号验证
++(BOOL)validateIDCardNumber:(NSString *)value
+{
+    
+    value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    int length =0;
+    if (!value) {
+        return NO;
+    }else {
+        length = (int)value.length;
+        
+        if (length !=15 && length !=18) {
+            return NO;
+        }
+    }
+    // 省份代码
+    NSArray *areasArray =@[@"11",@"12", @"13",@"14", @"15",@"21", @"22",@"23", @"31",@"32", @"33",@"34", @"35",@"36", @"37",@"41", @"42",@"43", @"44",@"45", @"46",@"50", @"51",@"52", @"53",@"54", @"61",@"62", @"63",@"64", @"65",@"71", @"81",@"82", @"91"];
+    
+    NSString *valueStart2 = [value substringToIndex:2];
+    BOOL areaFlag =NO;
+    for (NSString *areaCode in areasArray) {
+        if ([areaCode isEqualToString:valueStart2]) {
+            areaFlag =YES;
+            break;
+        }
+    }
+    if (!areaFlag) {
+        return false;
+    }
+    NSRegularExpression *regularExpression;
+    NSUInteger numberofMatch;
+    
+    int year =0;
+    switch (length) {
+        case 15:
+        {
+            year = [value substringWithRange:NSMakeRange(6,2)].intValue +1900;
+            
+            if (year %4 ==0 || (year %100 ==0 && year %4 ==0)) {
+                
+                regularExpression = [[NSRegularExpression alloc]initWithPattern:@"^[1-9][0-9]{5}[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}$"
+                                                                        options:NSRegularExpressionCaseInsensitive
+                                                                          error:nil];//测试出生日期的合法性
+            }else {
+                regularExpression = [[NSRegularExpression alloc]initWithPattern:@"^[1-9][0-9]{5}[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))[0-9]{3}$"
+                                                                        options:NSRegularExpressionCaseInsensitive
+                                                                          error:nil];//测试出生日期的合法性
+            }
+            numberofMatch = [regularExpression numberOfMatchesInString:value
+                                                               options:NSMatchingReportProgress
+                                                                 range:NSMakeRange(0, value.length)];
+            
+            if(numberofMatch >0) {
+                return YES;
+            }else {
+                return NO;
+            }
+        }
+            break;
+        case 18:
+        {
+            year = [value substringWithRange:NSMakeRange(6,4)].intValue;
+            if (year %4 ==0 || (year %100 ==0 && year %4 ==0)) {
+                
+                regularExpression = [[NSRegularExpression alloc]initWithPattern:@"^[1-9][0-9]{5}19[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}[0-9Xx]$"
+                                                                        options:NSRegularExpressionCaseInsensitive
+                                                                          error:nil];//测试出生日期的合法性
+            }else {
+                regularExpression = [[NSRegularExpression alloc]initWithPattern:@"^[1-9][0-9]{5}19[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))[0-9]{3}[0-9Xx]$"
+                                                                        options:NSRegularExpressionCaseInsensitive
+                                                                          error:nil];//测试出生日期的合法性
+            }
+            numberofMatch = [regularExpression numberOfMatchesInString:value
+                                                               options:NSMatchingReportProgress
+                                                                 range:NSMakeRange(0, value.length)];
+            
+            //            [regularExpressionrelease];
+            
+            if(numberofMatch >0) {
+                int S = ([value substringWithRange:NSMakeRange(0,1)].intValue + [value substringWithRange:NSMakeRange(10,1)].intValue) *7 + ([value substringWithRange:NSMakeRange(1,1)].intValue + [value substringWithRange:NSMakeRange(11,1)].intValue) *9 + ([value substringWithRange:NSMakeRange(2,1)].intValue + [value substringWithRange:NSMakeRange(12,1)].intValue) *10 + ([value substringWithRange:NSMakeRange(3,1)].intValue + [value substringWithRange:NSMakeRange(13,1)].intValue) *5 + ([value substringWithRange:NSMakeRange(4,1)].intValue + [value substringWithRange:NSMakeRange(14,1)].intValue) *8 + ([value substringWithRange:NSMakeRange(5,1)].intValue + [value substringWithRange:NSMakeRange(15,1)].intValue) *4 + ([value substringWithRange:NSMakeRange(6,1)].intValue + [value substringWithRange:NSMakeRange(16,1)].intValue) *2 + [value substringWithRange:NSMakeRange(7,1)].intValue *1 + [value substringWithRange:NSMakeRange(8,1)].intValue *6 + [value substringWithRange:NSMakeRange(9,1)].intValue *3;
+                int Y = S %11;
+                NSString *M =@"F";
+                NSString *JYM =@"10X98765432";
+                M = [JYM substringWithRange:NSMakeRange(Y,1)];// 判断校验位
+                if ([M isEqualToString:[value substringWithRange:NSMakeRange(17,1)]]) {
+                    return YES;// 检测ID的校验位
+                }else {
+                    return NO;
+                }
+                
+            }else {
+                return NO;
+            }
+        }
+        default:
+            return false;
+    }
+}
+
+//压缩图片
++(NSData *)imageData:(UIImage *)myimage
+{
+    CGFloat imgWidth = myimage.size.width;
+    CGFloat imgHeight = myimage.size.height;
+    CGSize newSize;
+    if (imgWidth > 1280) {
+        imgHeight = imgHeight / imgWidth * 1280;
+        newSize = CGSizeMake(1280, imgHeight);
+    }else{
+        newSize = CGSizeMake(imgWidth, imgHeight);
+    }
+    
+    UIImage *img = [self scaleToSize:myimage size:newSize];
+    
+    NSData *data=UIImageJPEGRepresentation(img, 1.0);
+    
+    return data;
+}
+//压缩图片
++ (UIImage *)scaleToSize:(UIImage *)img size:(CGSize)size{
+    
+    // 设置成为当前正在使用的context
+    UIGraphicsBeginImageContext(size);
+    // 绘制改变大小的图片
+    [img drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    // 从当前context中创建一个改变大小后的图片
+    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    // 使当前的context出堆栈
+    UIGraphicsEndImageContext();
+    // 返回新的改变大小后的图片
+    return scaledImage;
+}
+
+
+
+//通过图片Data数据第一个字节 来获取图片扩展名
++(NSString *)contentTypeForImageData:(NSData *)data {
+    uint8_t c;
+    [data getBytes:&c length:1];
+    switch (c) {
+        case 0xFF:
+            return @"jpeg";
+        case 0x89:
+            return @"png";
+        case 0x47:
+            return @"gif";
+        case 0x49:
+        case 0x4D:
+            return @"tiff";
+        case 0x52:
+            if ([data length] < 12) {
+                return nil;
+            }
+            NSString *testString = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(0, 12)] encoding:NSASCIIStringEncoding];
+            if ([testString hasPrefix:@"RIFF"] && [testString hasSuffix:@"WEBP"]) {
+                return @"webp";
+            }
+            return nil;
+    }
+    return nil;
+}
+
++ (BOOL) isSafePassword:(NSString *)strPwd{
+    NSString *passWordRegex = @"^(?=.*[a-zA-Z0-9].*)(?=.*[a-zA-Z\\W].*)(?=.*[0-9\\W].*).{6,20}$";   // 数字，字符或符号至少两种
+    NSPredicate *regextestcm = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", passWordRegex];
+    
+    if ([regextestcm evaluateWithObject:strPwd] == YES)
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+    
+}
+
+
+/**
+ 2  * @method
+ 3  *
+ 4  * @brief 获取两个日期之间的天数
+ 5  * @param fromDate       起始日期
+ 6  * @param toDate         终止日期
+ 7  * @return    总天数
+ 8  */
++ (NSInteger)numberOfDaysWithFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate{
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    
+    NSDateComponents * comp = [calendar components:NSCalendarUnitDay
+                                          fromDate:fromDate
+                                            toDate:toDate
+                                           options:NSCalendarWrapComponents];
+    
+    return comp.day;
+}
+
+
+
++(void)imageViewSetCornerRadius:(CGSize)radius imageView:(UIImageView *)imageView rect:(CGRect)rect
+{
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:rect byRoundingCorners:UIRectCornerAllCorners cornerRadii:radius];
+    
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc]init];
+    //设置大小
+    maskLayer.frame = imageView.bounds;
+    //设置图形样子
+    maskLayer.path = maskPath.CGPath;
+    imageView.layer.mask = maskLayer;
+}
+
+
+//只能为大写字母
+- (BOOL)onlyInputACapital:(NSString*)string{
+    
+    NSString *regex =@"[A-Z]*";
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    
+    BOOL inputString = [predicate evaluateWithObject:string];
+    
+    return inputString;
+    
+}
+
+
+/**
+ view 传入要变圆角的视图
+ size自己根据需要设置角度大小
+ 后面的4个角 BOOL 1 是设置该角为圆角 0 不改变
+ */
++ (void)renYiYuanJiao:(UIView *)view size:(CGSize)size left:(BOOL)left right:(BOOL)right bottomLeft:(BOOL)bottomLeft bottomRight:(BOOL)bottomRight {
+    UIRectCorner Left = 0;
+    UIRectCorner Right = 0;
+    UIRectCorner BottomLeft = 0;
+    UIRectCorner BottomRight = 0;
+    if (left) {
+        Left = UIRectCornerTopLeft;
+    }
+    if (right) {
+        Right = UIRectCornerTopRight;;
+    }
+    if (bottomLeft) {
+        BottomLeft = UIRectCornerBottomLeft;
+    }
+    if (bottomRight) {
+        BottomRight = UIRectCornerBottomRight;
+    }
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds byRoundingCorners:Left|Right|BottomLeft|BottomRight cornerRadii:size];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.backgroundColor = APPWhiteColor.CGColor;
+    maskLayer.frame = view.bounds;
+    maskLayer.path = maskPath.CGPath;
+    view.layer.mask = maskLayer;
+}
+
++(NSString *)filterHTML:(NSString *)html
+{
+    NSScanner * scanner = [NSScanner scannerWithString:html];
+    NSString * text = nil;
+    while([scanner isAtEnd]==NO)
+    {
+        [scanner scanUpToString:@"<" intoString:nil];
+        [scanner scanUpToString:@">" intoString:&text];
+        html = [html stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@>",text] withString:@""];
+    }
+    return html;
+}
+
+
+///拼接域名- 区分专家baseurl /与 学习baseurl
++ (NSString *)getAbsoluteUrl:(NSString *)withUrl {
+    NSMutableArray *zjUrls = [[NSMutableArray alloc] initWithArray:
+                              @[
+                                  ZJsmrzxx_HTTP,
+                                  checkinjianguan_HTTP,
+                                  getBidNoticeList_HTTP,
+                                  getzjDefaultGetDefault_HTTP,
+                                  ADDPUSHCLIENTEQUIPMENT,
+                                  EuploadFile_HTTP,
+                                  getProfession_HTTP,
+                                  expertGetSysIndustriesTypeSecondList_HTTP,
+                                  getExpertMessage_HTTP,
+                                  getExpertMessageOfAll_HTTP,
+                                  updateZjData_HTTP,
+                                  expertGetExpertList_HTTP,
+                                  expertGetUserHasCompleteStatus_HTTP,
+                                  expertIsLocked_HTTP,
+                                  expertGetExpertPenalty_HTTP,
+                                  expertGetLeavePhone_HTTP,
+                                  bidevaluationSmrzxxIsBelow_HTTP,
+                                  expertDecrypt_HTTP,
+                                  expertDistance_HTTP,
+                                  faceLogin_HTTP,
+                                  LOGINHTTP,
+                                  LOGOUTHTTP,
+                                  ZC_SEND_SHORT_HTTP,
+                                  LOSTPWD_SEND_SHORT_HTTP,
+                                  UPDATEPASSWORD_HTTP,
+                                  RESETPWD_HTTP,
+                                  ZC_HTTP,
+                                  expert_getExpertPass_HTTP,
+                                  expert_getExpertIdentity_HTTP,
+                                  getWaitExtractProfession_HTTP,
+                                  getProfessionHistory_HTTP,
+                                  expert_getExpertInfo_HTTP,
+                                  zj_expert_getJobTitle_HTTP,
+                                  zj_insertRate_HTTP,
+                                  zj_getExpertRateList_HTTP,
+                                  zj_getExpertEvaluate_HTTP,
+                                  zj_getExpertRateDetail_HTTP,
+                                  zj_bidevaluationGetExpertEvaluate_HTTP,
+                                  zj_expertReconsider_HTTP,
+                                  zj_getReconsiderDetail_HTTP,
+                                  zj_getTsList_HTTP,
+                                  UPLOADTP_HTTP,
+                                  updateUserInfo_HTTP,
+                                  zj_sysGetInfo_HTTP,
+                                  zj_caCreateCa_HTTP,
+                                  zj_caRequestCa_HTTP,
+                                  zj_createDD_HTTP,
+                                  onlinepay_HTTP,
+                                  allinPay_HTTP,
+                                  backonlinepay_HTTP,
+                                  zj_getMyDeal_HTTP,
+                                  zj_getMyDealInfo_HTTP,
+                                  zj_CAreceipt_HTTP,
+                                  zj_CAGetCaStatus_HTTP,
+                                  zj_CAdeleteDD_HTTP,
+                                  zj_createBB_HTTP,
+                                  zj_caRequestBB_HTTP,
+                                  zj_createBBDD_HTTP,
+                                  zj_getBBStatus_HTTP,
+                                  zj_getZjAddressesStatus_HTTP,
+                                  zj_getZjAddresses_HTTP,
+                                  zj_getBookList_HTTP,
+                                  zj_sysGetAdmin,
+                                  zj_expertGetActiveAvoidanceCompany_HTTP,
+                                  zj_expertUpdateActiveAvoidanceCompany_HTTP,
+                                  zj_expertDeleteActiveAvoidanceCompany_HTTP,
+                                  zj_expertGetExpertTags_HTTP,zj_HostRecordPhone_HTTP,zj_getExpertBank_HTTP,zj_expert_bank_getBank_HTTP,zj_perfectBank_HTTP,zj_expert_getExpertIsMind_HTTP,zj_expertTouristChangeExpert_HTTP,
+                                  zj_userlogout_HTTP,zj_expertgetExpertIsNew_HTTP,zj_expertupdatePhone_HTTP,zj_expertsendUpdateMessage_HTTP,
+                                  zj_getCertificates_HTTP,
+                                  zj_perfectCertificates_HTTP,
+                                  zj_ca_signGot_HTTP,
+                                  zj_getUserSignature_HTTP,
+                                  zj_getBidEvaluationFeeList_HTTP,
+                                  zj_requestReview_HTTP,
+                                  zj_requestReviewSignature_HTTP,
+                                  zj_getBidEvaluationFeeDetailed_HTTP,
+                                  zj_getbidEvaluationFeeRecord_HTTP,
+                                  zj_getExpertDetailed_HTTP,
+                                  zj_tradingSignature_HTTP,
+                                  zj_tradingNotSignature_HTTP,
+                                  zj_tradingSignatureConfirm_HTTP,
+                                  zj_getCloudSignatureType_HTTP,
+                                  zj_handleCloudSignatureIntroduce_HTTP,
+                                  zj_handleCloudSignature_HTTP,
+                                  zj_getCloudSignaturePrice_HTTP,
+                                  zj_getCloudSignatureList_HTTP,
+                                  zj_getCloudSignature_HTTP,
+                                  zj_cancelCloudSignature_HTTP,
+                                  zj_canableToHandle_HTTP,
+                                  zj_updateSignature_HTTP,
+                                  zj_tradingSignatureConfirm_HTTP,
+                                  zj_tradingCancelSignature_HTTP,
+                                  zj_dictionary_HTTP,
+                                  zj_appealExpertEvaluate_HTTP,
+                                  zj_getAppealList_HTTP,
+                                  zj_getExpertEvaluateTable_HTTP,
+                                  zj_getExpertEvaluateById_HTTP,
+                                  zj_getExpertEvaluateUnReadCount_HTTP,
+                                  zj_evaluate_HTTP,zj_rewardCode_HTTP,
+                                  zj_rewardApplyList_HTTP,
+                                  zj_rewardApply_HTTP,
+                                  zj_getOtherPoints_HTTP,
+                                  zj_getIllegalIdcard_HTTP,
+                                  zj_getCallResult_HTTP,
+                                  zj_leave_HTTP,
+                                  zj_payiosPay_HTTP,
+                                  zj_dictionaryGetCode_HTTP,
+                                  zj_syncExpertData_HTTP,
+                                  zj_updateCity_HTTP,
+                                  zj_getApproval_HTTP,
+                                  zj_updateDetail_HTTP,
+                                  zj_handleProjectCloudSignature_HTTP,
+                                  zj_setMainEvaluationMajor_HTTP,
+                                  zj_getExpertMainEvaluationInformation_HTTP,
+                                  zj_insertNationalNodesOrNewMechanism_HTTP,
+                                  zj_getExpertMainEvaluationList_HTTP,
+                                  zj_getCommitmentEleNew_HTTP,
+                                  zj_updCommitmentEleNew_HTTP,
+                                  zj_getCityExportUpd_HTTP,
+                                  zj_expertLeaveResponse_HTTP,
+                                  zj_recognition_idcard_HTTP
+                              ]];
+    
+    NSMutableArray *jgUrls = [[NSMutableArray alloc] initWithArray:@[jg_expertQuestionCreateQuestion_HTTP,jg_expertQuestionAnswerQuestion_HTTP,jg_expertQuestionUpload_HTTP,jg_expertQuestionGetMyQuestion_HTTP,jg_expertQuestionGetQuestionForAdmin_HTTP,jg_regionCityByLN_HTTP,jg_expertQuestionAnswerRate_HTTP]];
+    
+    NSString * absoluteUrl = [NSString stringWithFormat:@"%@%@",BASE_IP,withUrl];
+    //遍历-专家的url
+    for (NSString *zjUrlItem in zjUrls) {
+        if ([zjUrlItem isEqualToString:withUrl]) {
+            absoluteUrl = [NSString stringWithFormat:@"%@%@",BASE_ZJ_IP,withUrl];
+            return absoluteUrl;
+        }
+    }
+    
+    for (NSString *zjUrlItem in jgUrls) {
+        if ([zjUrlItem isEqualToString:withUrl]) {
+            absoluteUrl = [NSString stringWithFormat:@"%@%@",BASE_JG_IP,withUrl];
+            return absoluteUrl;
+        }
+    }
+     
+    return absoluteUrl;
+}
+
+@end

@@ -1,0 +1,16 @@
+//
+//  WY_PersonalScoreModel.m
+//  DormitoryManagementPro
+//
+//  Created by 王杨 on 2020/2/26.
+//  Copyright © 2020 王杨. All rights reserved.
+//
+
+#import "WY_PersonalScoreModel.h"
+
+@implementation WY_PersonalScoreModel
++ (NSDictionary *)modelCustomPropertyMapper {
+    NSDictionary *dic=@{@"nsDescription" :@"description"};
+    return dic;
+}
+@end

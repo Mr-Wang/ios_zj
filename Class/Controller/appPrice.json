@@ -1,0 +1,54 @@
+{
+    "msg": "查询列表成功",
+    "data": [
+        {
+            "priceName": "6.00网联币",
+            "priceValue": 6
+        },
+        {
+            "priceName": "50.00网联币",
+            "priceValue": 50
+        },
+        {
+            "priceName": "88.00网联币",
+            "priceValue": 88
+        },
+        {
+            "priceName": "128.00网联币",
+            "priceValue": 128
+        },
+        {
+            "priceName": "158.00网联币",
+            "priceValue": 158
+        },
+        {
+            "priceName": "168.00网联币",
+            "priceValue": 168
+        },
+        {
+            "priceName": "188.00网联币",
+            "priceValue": 188
+        },
+        {
+            "priceName": "198.00网联币",
+            "priceValue": 198
+        },
+        {
+            "priceName": "218.00网联币",
+            "priceValue": 218
+        },
+        {
+            "priceName": "258.00网联币",
+            "priceValue": 258
+        },
+        {
+            "priceName": "283.00网联币",
+            "priceValue": 283
+        },
+        {
+            "priceName": "9998.00网联币",
+            "priceValue": 9998
+        }
+    ],
+    "code": 0
+}

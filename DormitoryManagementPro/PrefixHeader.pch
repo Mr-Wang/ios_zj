@@ -1,0 +1,61 @@
+//
+//  PrefixHeader.pch
+//  DormitoryManagementPro
+//
+//  Created by 王杨 on 2019/9/3.
+//  Copyright © 2019 王杨. All rights reserved.
+//
+
+//#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#ifdef  __cplusplus
+#include <opencv2/opencv.hpp>
+#endif
+
+#ifdef __OBJC__
+#import "UIView+Extension.h"
+#import "AFNetworking.h"
+#import "UIImageView+WebCache.h"
+#import "MJExtension.h"
+
+#import <IQKeyboardManager/IQKeyboardManager.h>
+#import "SVProgressHUD+MS_SVProgressHUD.h"
+#import "MS_BasicDataController.h"
+#import "GlobalConfig.h"
+
+#import <SDAutoLayout/UIView+SDAutoLayout.h>
+#import <SDAutoLayout/UITableView+SDAutoTableViewCellHeight.h>
+
+#import <WebKit/WebKit.h>
+
+#import <WebViewJavascriptBridge/WKWebViewJavascriptBridge.h>
+#import "MJExtension.h"
+#import "MJRefresh.h"
+#import "UIView+Extension.h"
+#import "MS_MeModel.h"
+#import "MS_GYBDesEncode.h"
+#import "MS_CommonTool.h"
+
+#import "Masonry.h"
+#import <YYCategories/YYCategories.h>
+#import "ActionSheetPicker.h"
+#import <SDWebImage/UIButton+WebCache.h>
+
+#import "SVProgressHUD.h"
+
+#import "AppDelegate.h"
+
+//#import "MS_LoginViewController.h"//登录
+
+//#import <CloudPushSDK/CloudPushSDK.h>
+#import <UserNotifications/UserNotifications.h>
+#import "WYMacros.h"
+#import "WY_UserModel.h"
+#import "WY_WLTools.h"
+#import <Toast.h>
+#import "NSDate+InternetDateTime.h"
+
+//
+
+#endif /* PrefixHeader_pch */
